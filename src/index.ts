@@ -5,7 +5,25 @@ export default {
    *
    * This gives you an opportunity to extend code.
    */
-  register(/*{ strapi }*/) {},
+  register({ strapi }) {
+    const extensionService = strapi.plugin('graphql').service('extension');
+
+    extensionService.use({
+      resolversConfig: {
+        'Mutation.updatePost': {
+          policies: [
+            async (context) => {
+              const entity = await strapi.db.query('api::post.post').findOne({
+                where: { id: context.args.id },
+                populate: { users_permissions_user: true },
+              });
+              return entity.users_permissions_user.id === context.context.state.user.id;
+            }
+          ]
+        }
+      }
+    });
+  },
 
   /**
    * An asynchronous bootstrap function that runs before
@@ -14,5 +32,5 @@ export default {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/*{ strapi }*/) {},
+  bootstrap(/*{ strapi }*/) { },
 };
