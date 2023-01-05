@@ -5,6 +5,19 @@
 import { factories } from '@strapi/strapi'
 
 export default factories.createCoreController('api::post.post', ({ strapi }) => ({
+  async create(ctx) {
+    const { data } = ctx.request.body as any
+
+    const parseData = JSON.parse(data)
+
+    const entry = await strapi.entityService.create('api::post.post', {
+      data: { ...parseData, users_permissions_user: { id: ctx.state.user.id } },
+    })
+
+    const sanitizedEntity = await this.sanitizeOutput(entry, ctx)
+
+    return this.transformResponse(sanitizedEntity)
+  },
   async update(ctx) {
     const { id } = ctx.params
 
@@ -18,21 +31,10 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
 
     const { data } = ctx.request.body as any
 
-    // create(post)
-    // update(put)沒有檔案
-    // const files = ctx.request.files as any
-
     const parseData = JSON.parse(data)
 
     const entry = await strapi.entityService.update('api::post.post', id, {
       data: { ...parseData },
-
-      // create(post)
-      // update(put)沒有檔案
-      // files: {
-      //   banner: files['files.banner'],
-      //   gallery: files['files.gallery'],
-      // },
     })
 
     const sanitizedEntity = await this.sanitizeOutput(entry, ctx)
