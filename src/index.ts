@@ -15,9 +15,9 @@ export default {
             async (context) => {
               const entity = await strapi.db.query('api::post.post').findOne({
                 where: { id: context.args.id },
-                populate: { users_permissions_user: true },
+                populate: { user: true },
               });
-              return entity.users_permissions_user.id === context.context.state.user.id;
+              return entity.user.id === context.context.state.user.id;
             }
           ]
         }
