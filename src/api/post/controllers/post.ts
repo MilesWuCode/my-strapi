@@ -18,6 +18,7 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
 
     return this.transformResponse(sanitizedEntity)
   },
+
   async update(ctx) {
     const { id } = ctx.params
 
@@ -41,4 +42,20 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
 
     return this.transformResponse(sanitizedEntity)
   },
+
+  async delete(ctx) {
+    const { id } = ctx.params
+
+    const entity = await strapi.db.query('api::post.post').findOne({
+      where: { id, users_permissions_user: { id: ctx.state.user.id } }
+    });
+
+    if (!entity) {
+      return ctx.notFound();
+    }
+
+    const response = await super.delete(ctx);
+
+    return response;
+  }
 }));
