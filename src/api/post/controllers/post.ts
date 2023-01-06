@@ -36,10 +36,9 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
     */
   },
 
+  // 自己寫的流程
+  /*
   async update(ctx) {
-    // 自己寫的流程
-
-    /*
     const { id } = ctx.params
 
     const entity = await strapi.db.query('api::post.post').findOne({
@@ -61,8 +60,8 @@ export default factories.createCoreController('api::post.post', ({ strapi }) => 
     const sanitizedEntity = await this.sanitizeOutput(entry, ctx)
 
     return this.transformResponse(sanitizedEntity)
-    */
   },
+  */
 
   // 自己寫的流程
   /*
