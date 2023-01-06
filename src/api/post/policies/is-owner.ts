@@ -9,5 +9,5 @@ export default async (policyContext, config, { strapi }) => {
     return false
   }
 
-  return true;
+  return true
 };

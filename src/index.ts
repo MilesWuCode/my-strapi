@@ -13,13 +13,20 @@ export default {
         'Mutation.updatePost': {
           policies: [
             async (context) => {
+              const id = context.args.id
+
               const entity = await strapi.db.query('api::post.post').findOne({
-                where: { id: context.args.id },
-                populate: { user: true },
+                where: { id, user: { id: context.state.user.id } }
               });
-              return entity.user.id === context.context.state.user.id;
+
+              if (!entity) {
+                return false
+              }
+
+              return true
             }
-          ]
+          ],
+          auth: true
         }
       }
     });

@@ -12,3 +12,8 @@ yarn develop
 - http://localhost:1337/api
 - http://localhost:1337/documentation
 - http://localhost:1337/graphql
+
+## 需要查詢文件
+
+- https://koajs.com/
+- https://nexusjs.org/
